@@ -1,0 +1,6 @@
+string config
+string mesh_file
+---
+bool success
+string message
+noether_ros/ToolPaths[] tool_paths
