@@ -1,0 +1,6 @@
+string config
+pcl_msgs/PolygonMesh mesh
+---
+bool success
+string message
+noether_ros2/ToolPaths[] tool_paths
