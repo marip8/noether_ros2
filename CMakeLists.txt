@@ -41,6 +41,11 @@ add_executable(${PROJECT_NAME}_tool_path_planning_server src/tool_path_planning_
 target_link_libraries(${PROJECT_NAME}_tool_path_planning_server ${PROJECT_NAME}_conversions yaml-cpp)
 ament_target_dependencies(${PROJECT_NAME}_tool_path_planning_server rclcpp)
 
+if(${ENABLE_TESTING})
+  enable_testing()
+  add_subdirectory(test)
+endif()
+
 # Install the headers
 install(DIRECTORY include/ DESTINATION include/)
 
