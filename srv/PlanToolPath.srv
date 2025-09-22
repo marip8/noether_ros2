@@ -1,5 +1,11 @@
+# Tool path planning pipeline YAML configuration string
 string config
+
+# File path of the mesh resource
 string mesh_file
+
+# TF frame to which the mesh is relative
+string mesh_frame
 ---
 bool success
 string message

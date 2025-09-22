@@ -28,6 +28,10 @@ protected:
 
       // Load the mesh file
       pcl::PolygonMesh mesh;
+
+      // Set the mesh frame from the request
+      mesh.header.frame_id = request->mesh_frame;
+
       if (pcl::io::loadPolygonFile(request->mesh_file, mesh) < 0)
         throw std::runtime_error("Failed to load mesh from file: " + request->mesh_file);
 
@@ -42,7 +46,7 @@ protected:
       std::transform(tool_paths.begin(),
                      tool_paths.end(),
                      std::back_inserter(response->tool_paths),
-                     [](const noether::ToolPaths& tp) { return noether_ros::toMsg(tp); });
+                     [&request](const noether::ToolPaths& tp) { return noether_ros::toMsg(tp, request->mesh_frame); });
     }
     catch (const std::exception& ex)
     {
