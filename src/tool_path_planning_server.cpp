@@ -2,6 +2,7 @@
 #include <noether_ros/conversions.h>
 
 #include <noether_tpp/core/tool_path_planner_pipeline.h>
+#include <noether_tpp/utils.h>
 #include <noether_tpp/plugin_interface.h>
 #include <pcl/io/vtk_lib_io.h>
 #include <rclcpp/rclcpp.hpp>
@@ -51,7 +52,9 @@ protected:
     catch (const std::exception& ex)
     {
       response->success = false;
-      response->message = ex.what();
+      std::stringstream ss;
+      noether::printException(ex, ss);
+      response->message = ss.str();
     }
   }
 
