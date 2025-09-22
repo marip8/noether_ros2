@@ -5,9 +5,10 @@
 
 namespace noether_ros
 {
-geometry_msgs::msg::PoseArray toMsg(const noether::ToolPathSegment& segment)
+geometry_msgs::msg::PoseArray toMsg(const noether::ToolPathSegment& segment, const std::string frame)
 {
   geometry_msgs::msg::PoseArray segment_msg;
+  segment_msg.header.frame_id = frame;
   segment_msg.poses.reserve(segment.size());
 
   std::transform(segment.begin(),
@@ -35,7 +36,7 @@ noether::ToolPathSegment fromMsg(const geometry_msgs::msg::PoseArray& segment_ms
   return segment;
 }
 
-noether_ros::msg::ToolPath toMsg(const noether::ToolPath& tool_path)
+noether_ros::msg::ToolPath toMsg(const noether::ToolPath& tool_path, const std::string frame)
 {
   noether_ros::msg::ToolPath tool_path_msg;
   tool_path_msg.segments.reserve(tool_path.size());
@@ -43,7 +44,7 @@ noether_ros::msg::ToolPath toMsg(const noether::ToolPath& tool_path)
   std::transform(tool_path.begin(),
                  tool_path.end(),
                  std::back_inserter(tool_path_msg.segments),
-                 [](const noether::ToolPathSegment& segment) { return toMsg(segment); });
+                 [&frame](const noether::ToolPathSegment& segment) { return toMsg(segment, frame); });
 
   return tool_path_msg;
 }
@@ -61,7 +62,7 @@ noether::ToolPath fromMsg(const noether_ros::msg::ToolPath& tool_path_msg)
   return tool_path;
 }
 
-noether_ros::msg::ToolPaths toMsg(const noether::ToolPaths& tool_paths)
+noether_ros::msg::ToolPaths toMsg(const noether::ToolPaths& tool_paths, const std::string frame)
 {
   noether_ros::msg::ToolPaths tool_paths_msg;
   tool_paths_msg.tool_paths.reserve(tool_paths.size());
@@ -69,7 +70,7 @@ noether_ros::msg::ToolPaths toMsg(const noether::ToolPaths& tool_paths)
   std::transform(tool_paths.begin(),
                  tool_paths.end(),
                  std::back_inserter(tool_paths_msg.tool_paths),
-                 [](const noether::ToolPath& tool_path) { return toMsg(tool_path); });
+                 [&frame](const noether::ToolPath& tool_path) { return toMsg(tool_path, frame); });
 
   return tool_paths_msg;
 }
@@ -87,9 +88,10 @@ noether::ToolPaths fromMsg(const noether_ros::msg::ToolPaths& tool_paths_msg)
   return tool_paths;
 }
 
-geometry_msgs::msg::PoseArray toMsg(const std::vector<noether::ToolPaths>& tool_paths_list)
+geometry_msgs::msg::PoseArray toMsg(const std::vector<noether::ToolPaths>& tool_paths_list, const std::string frame)
 {
   geometry_msgs::msg::PoseArray msg;
+  msg.header.frame_id = frame;
 
   for (const noether::ToolPaths& tool_paths : tool_paths_list)
     for (const noether::ToolPath& tool_path : tool_paths)
