@@ -51,11 +51,7 @@ protected:
 
       // Fill in the response
       response->success = true;
-      response->tool_paths.reserve(tool_paths.size());
-      std::transform(tool_paths.begin(),
-                     tool_paths.end(),
-                     std::back_inserter(response->tool_paths),
-                     [&request](const noether::ToolPaths& tp) { return noether_ros::toMsg(tp, request->mesh_frame); });
+      response->tool_paths = noether_ros::toMsg(tool_paths, request->mesh_frame);
     }
     catch (const std::exception& ex)
     {

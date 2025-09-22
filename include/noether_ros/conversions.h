@@ -14,6 +14,13 @@ noether::ToolPath fromMsg(const noether_ros::msg::ToolPath& tool_path_msg);
 noether_ros::msg::ToolPaths toMsg(const noether::ToolPaths& tool_paths, const std::string frame = "");
 noether::ToolPaths fromMsg(const noether_ros::msg::ToolPaths& tool_paths_msg);
 
-geometry_msgs::msg::PoseArray toMsg(const std::vector<noether::ToolPaths>& tool_paths, const std::string frame = "");
+std::vector<noether_ros::msg::ToolPaths> toMsg(const std::vector<noether::ToolPaths>& tool_paths_list,
+                                               const std::string& frame = "");
+std::vector<noether::ToolPaths> fromMsg(const std::vector<noether_ros::msg::ToolPaths>& tool_paths_msg);
+
+geometry_msgs::msg::PoseArray flattenToMsg(const noether::ToolPath& tool_paths, const std::string frame = "");
+geometry_msgs::msg::PoseArray flattenToMsg(const noether::ToolPaths& tool_paths, const std::string frame = "");
+geometry_msgs::msg::PoseArray flattenToMsg(const std::vector<noether::ToolPaths>& tool_paths,
+                                           const std::string frame = "");
 
 }  // namespace noether_ros

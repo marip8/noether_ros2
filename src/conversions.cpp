@@ -88,7 +88,59 @@ noether::ToolPaths fromMsg(const noether_ros::msg::ToolPaths& tool_paths_msg)
   return tool_paths;
 }
 
-geometry_msgs::msg::PoseArray toMsg(const std::vector<noether::ToolPaths>& tool_paths_list, const std::string frame)
+std::vector<noether_ros::msg::ToolPaths> toMsg(const std::vector<noether::ToolPaths>& tool_paths_list,
+                                               const std::string& frame)
+{
+  std::vector<noether_ros::msg::ToolPaths> tool_paths_list_msg;
+  tool_paths_list_msg.reserve(tool_paths_list.size());
+  std::transform(tool_paths_list.begin(),
+                 tool_paths_list.end(),
+                 std::back_inserter(tool_paths_list_msg),
+                 [&frame](const noether::ToolPaths& tp) { return noether_ros::toMsg(tp, frame); });
+
+  return tool_paths_list_msg;
+}
+
+std::vector<noether::ToolPaths> fromMsg(const std::vector<noether_ros::msg::ToolPaths>& tool_paths_list_msg)
+{
+  std::vector<noether::ToolPaths> tool_paths_list;
+  tool_paths_list.reserve(tool_paths_list_msg.size());
+  std::transform(
+      tool_paths_list_msg.begin(),
+      tool_paths_list_msg.end(),
+      std::back_inserter(tool_paths_list),
+      [](const noether_ros::msg::ToolPaths& tool_paths_msg) { return noether_ros::fromMsg(tool_paths_msg); });
+
+  return tool_paths_list;
+}
+
+geometry_msgs::msg::PoseArray flattenToMsg(const noether::ToolPath& tool_path, const std::string frame)
+{
+  geometry_msgs::msg::PoseArray msg;
+  msg.header.frame_id = frame;
+
+  for (const noether::ToolPathSegment& segment : tool_path)
+    for (const Eigen::Isometry3d& pose : segment)
+      msg.poses.push_back(tf2::toMsg(pose));
+
+  return msg;
+}
+
+geometry_msgs::msg::PoseArray flattenToMsg(const noether::ToolPaths& tool_paths, const std::string frame)
+{
+  geometry_msgs::msg::PoseArray msg;
+  msg.header.frame_id = frame;
+
+  for (const noether::ToolPath& tool_path : tool_paths)
+    for (const noether::ToolPathSegment& segment : tool_path)
+      for (const Eigen::Isometry3d& pose : segment)
+        msg.poses.push_back(tf2::toMsg(pose));
+
+  return msg;
+}
+
+geometry_msgs::msg::PoseArray flattenToMsg(const std::vector<noether::ToolPaths>& tool_paths_list,
+                                           const std::string frame)
 {
   geometry_msgs::msg::PoseArray msg;
   msg.header.frame_id = frame;
