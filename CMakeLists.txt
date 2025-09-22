@@ -54,7 +54,9 @@ install(DIRECTORY include/ DESTINATION include/)
 install(
   TARGETS ${PROJECT_NAME}_conversions
   EXPORT ${PROJECT_NAME}-targets
-  DESTINATION lib
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
 )
 ament_export_targets(${PROJECT_NAME}-targets HAS_LIBRARY_TARGET)
 
