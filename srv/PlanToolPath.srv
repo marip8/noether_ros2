@@ -1,4 +1,5 @@
-# Tool path planning pipeline YAML configuration string
+# Tool path planning pipeline YAML configuration
+# This parameter can either be a YAML-formatted string or an absolute path to a YAML file
 string config
 
 # File path of the mesh resource

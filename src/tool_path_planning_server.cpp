@@ -1,5 +1,5 @@
-#include <noether_ros/srv/plan_tool_path.hpp>
 #include <noether_ros/conversions.h>
+#include <noether_ros/srv/plan_tool_path.hpp>
 
 #include <noether_tpp/core/tool_path_planner_pipeline.h>
 #include <noether_tpp/utils.h>
@@ -24,8 +24,16 @@ protected:
   {
     try
     {
-      // Convert input configuration string to YAML node
-      YAML::Node config = YAML::Load(request->config);
+      // Convert input configuration string/file to YAML node
+      YAML::Node config;
+      try
+      {
+        config = YAML::LoadFile(request->config);
+      }
+      catch (const YAML::Exception&)
+      {
+        config = YAML::Load(request->config);
+      }
 
       // Load the mesh file
       pcl::PolygonMesh mesh;
