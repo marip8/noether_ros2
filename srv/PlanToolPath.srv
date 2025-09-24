@@ -1,0 +1,13 @@
+# Tool path planning pipeline YAML configuration
+# This parameter can either be a YAML-formatted string or an absolute path to a YAML file
+string config
+
+# File path of the mesh resource
+string mesh_file
+
+# TF frame to which the mesh is relative
+string mesh_frame
+---
+bool success
+string message
+noether_ros/ToolPaths[] tool_paths
