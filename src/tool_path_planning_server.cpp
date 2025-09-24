@@ -41,7 +41,7 @@ protected:
       // Set the mesh frame from the request
       mesh.header.frame_id = request->mesh_frame;
 
-      if (pcl::io::loadPolygonFile(request->mesh_file, mesh) < 0)
+      if (pcl::io::loadPolygonFile(request->mesh_file, mesh) <= 0)
         throw std::runtime_error("Failed to load mesh from file: " + request->mesh_file);
 
       // Create and run the tool path planning pipeline
