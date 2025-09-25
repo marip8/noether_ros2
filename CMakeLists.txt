@@ -66,6 +66,7 @@ install(TARGETS ${PROJECT_NAME}_tool_path_planning_server DESTINATION lib/${PROJ
 ament_export_dependencies(
   builtin_interfaces
   geometry_msgs
+  noether_tpp
   rosidl_default_runtime
   tf2_eigen
 )
